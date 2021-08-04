@@ -1,1 +1,1 @@
-# -linux_opengl_benchmarks
+# Linux OpenGL Benchmarks
