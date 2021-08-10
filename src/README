@@ -1,0 +1,28 @@
+ Create a new folder, copy in the files from the 32bit or 64bit
+ directories. Include ogl1.c, the BMP files from the textures
+ bmp folder and the runit file. Change lines 19 to 20 of ogl1.c
+ to comment out as appropriate for:
+
+ #define version  "32 Bit Version 1" or
+ #define version  "64 Bit Version 1"
+
+ Open a Terminal and cd to point to the new folder. Compile for
+ 32 bits using:
+
+ gcc ogl1.c cpuidc.o cpuida.o -lrt -lc -lm -O3 -lglut -lGLU -o videogl32
+
+ or for 64 bits:
+
+ gcc ogl1.c cpuidc64.o cpuida64.o -m64 -lrt -lc -lm -O3 -lglut -lGLU -o videogl64
+
+
+ Run using ./videogl32 or ./videogl64 or edit the runit script file
+ and use ./runit
+
+ File libglut.xo.3 is required at run time. If OpenGL Utility Toolkit
+ (GLUT) is not installed copy the file from bin32 or bin64 into the new
+ folder and execute the command in set LIBRARY_PATH.txt:
+
+ export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/
+
+ Or find and install freeglut for the particular distro.
