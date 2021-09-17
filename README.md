@@ -3,6 +3,9 @@ This is a source mirror of [Roy Longbottom's Linux OpenGL Benchmarks](http://www
 
 # Dependencies
 Ensure that OpenGL Utility Toolkit (GLUT) is installed on your build host, e.g. freeglut
+```
+sudo dnf install freeglut-devel
+```
 
 ## Build
 make -C src
