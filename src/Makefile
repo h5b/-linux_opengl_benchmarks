@@ -1,7 +1,6 @@
-LBITS := $(shell getconf LONG_BIT)
+include ${CURDIR}/../Makefile.inc
 
-SOURCES = \
-	ogl1.c
+SOURCES = ogl1.c
 
 CLEANFILES += *.o
 CLEANFILES += vga.txt
@@ -9,27 +8,20 @@ CLEANFILES += videogl.txt
 CLEANFILES += videogl$(LBITS)
 
 ifeq ($(LBITS),64)
-OBJS := \
-	cpuida64.o \
-	cpuidc64.o
+	OBJS := cpuida64.o cpuidc64.o
 else
-OBJS := \
-	cpuida.o \
-	cpuidc.o
+	OBJS := cpuida.o cpuidc.o
 endif
 
 %.o: %.asm
-	nasm -f elf32 -g -F stabs cpuida.asm
-	nasm -f elf64 -g -F stabs cpuida64.asm
+	$(NASM) $(ASM_FLAGS) -o $@ $<
 
 %.o: cpuid%.c
 	$(CC) $(CFLAGS) $< -c
 
 all: $(OBJS)
-	$(CC) $(CPPFLAGS) $(SOURCES) $(OBJS) -lrt -lc -lm -lglut -lGL -lGLU -o videogl$(LBITS)
+	$(CC) $(CPPFLAGS) $(SOURCES) $(OBJS) $(LDFLAGS) -o videogl$(LBITS)
 
 clean:
 	rm -rf $(CLEANFILES)
-
-include ${CURDIR}/../Makefile.inc
 

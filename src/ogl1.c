@@ -1751,7 +1751,7 @@ void main(int argc, char **argv)
        local_time();
        if (runMins > 0.0)
        {
-            printf(" ##########################################\n");
+            printf(" #####################################################################\n");
             printf(" Linux OpenGL Reliability Test %s, %s\n", version, timeday);
             fprintf(outfile, " #####################################################################\n\n");
             fprintf(outfile, " OpenGL Reliability Test %s, %s\n", version, timeday);
@@ -1760,14 +1760,14 @@ void main(int argc, char **argv)
        }
        else if (oneTest == 1)
        {
-            printf(" ##########################################\n");
+            printf(" #####################################################################\n");
             printf(" Linux OpenGL Benchmark %s, %s\n", version, timeday);
             fprintf(outfile, " #####################################################################\n\n");
             fprintf(outfile, " OpenGL Benchmark %s, %s\n", version, timeday);
        }
        else
        {
-            printf(" ##########################################\n");
+            printf(" #####################################################################\n");
             printf(" Linux OpenGL Benchmark %s, %s\n", version, timeday);
             printf("          Running Time Approximately %d Seconds Each Test\n\n", (int)runSecs);
             printf(" Window Size  Coloured Objects  Textured Objects  WireFrm  Texture\n");
