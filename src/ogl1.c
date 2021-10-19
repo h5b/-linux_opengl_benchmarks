@@ -4,6 +4,7 @@
 */
 
 #include <GL/glut.h>
+#include <ctype.h>
 #include <math.h>
 #include <mm_malloc.h>
 #include <stdio.h>
