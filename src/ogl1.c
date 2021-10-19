@@ -111,7 +111,7 @@ float    wideM, deepM, wideMa;
 float    deepMa, deepMb, deepMc;
 float    wideL, inLS, deepLS, thickTB;
 float    floorUp, inset, handleUp;
-float    wide2, wide2a, wide2b, wide2c, wide2d; 
+float    wide2, wide2a, wide2b, wide2c, wide2d;
 float    wallR, wallL, wallF, wallB;
 float    shelfHi;
 float    upBarIn;
@@ -405,14 +405,14 @@ void setCarveTexture(void)
 {
    int i;
    int p = 0;
-    
+
     for (i=0; i<tex1Height*tex1Width; ++i)
     {
         myTile[10][p+0] = (char)carveRGB[carve[i]][0];
         myTile[10][p+1] = (char)carveRGB[carve[i]][1];
         myTile[10][p+2] = (char)carveRGB[carve[i]][2];
         myTile[10][p+3] = (unsigned char)255;
-        p += 4;   
+        p += 4;
     }
 }
 
@@ -426,11 +426,11 @@ void setCarveTexture(void)
 
 BOOL loadBMP(char abmp[100], int f)
 {
-       
+
    FILE *fr1;
    int g, i;
-   char buf1[60];  
-        
+   char buf1[60];
+
    fr1 = fopen(abmp, "rb");
    if (fr1 == NULL)
    {
@@ -447,12 +447,12 @@ BOOL loadBMP(char abmp[100], int f)
       g  = getchar();
       exit (0);
    }
-    
+
 
     abwide[f] = (abs)(buf1[18]+256*buf1[19]);
     abhigh[f] = (abs)(buf1[22]+256*buf1[23]);
 
-    
+
    if ( abhigh[f] * abwide[f] > 65536)
    {
       printf ("\n %s file too many pixels\n\n", abmp);
@@ -460,7 +460,7 @@ BOOL loadBMP(char abmp[100], int f)
       g  = getchar();
       exit (0);
    }
-    
+
    if (fread(myTile[f], abhigh[f] * abwide[f] * 3, 1, fr1) == 0)
    {
       printf ("\n Error reading %s file\n\n", abmp);
@@ -672,7 +672,7 @@ void draw_scene(void)
     {
         start_time();
         doTime = FALSE;
-    }   
+    }
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     glLightfv(GL_LIGHT0, GL_POSITION, light0Pos);
@@ -697,18 +697,18 @@ void draw_scene(void)
 
         glPushMatrix();
         glPushAttrib(GL_TEXTURE_BIT); // tunnel
-        {   
+        {
              glShadeModel( GL_FLAT );
-            
+
              glMatrixMode( GL_PROJECTION );
              glLoadIdentity();
              gluPerspective(45, 1, 0.01, 150);
-        
+
              gluLookAt(eyeX, eyeY, eyeZ, 0, 0, 0, upX, upY, upZ);
-             
+
              glMatrixMode( GL_MODELVIEW );
              // *****  Tunnel Wall Texture *****
-    
+
              if (useTexture)
              {
                 glTexEnvi(GL_TEXTURE_ENV,
@@ -720,17 +720,17 @@ void draw_scene(void)
                 glTexParameteri(GL_TEXTURE_2D,
                                            GL_TEXTURE_WRAP_S, GL_REPEAT);
                 glTexParameteri(GL_TEXTURE_2D,
-                                           GL_TEXTURE_WRAP_T, GL_REPEAT);   
+                                           GL_TEXTURE_WRAP_T, GL_REPEAT);
                 glTexImage2D(GL_TEXTURE_2D, 0, 3, abwide[4], abhigh[4], 0,
                                            GL_BGR, GL_UNSIGNED_BYTE, myTile[4]);
                 glEnable(GL_TEXTURE_2D);
-    
-    
+
+
              }
              else
              {
                  // ***** Tunnel Wall Carve Pattern *****
-                 
+
                 glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
                 glTexParameteri(GL_TEXTURE_2D,
                                        GL_TEXTURE_MIN_FILTER, GL_LINEAR);
@@ -739,36 +739,36 @@ void draw_scene(void)
                 glTexParameteri(GL_TEXTURE_2D,
                                            GL_TEXTURE_WRAP_S, GL_REPEAT);
                 glTexParameteri(GL_TEXTURE_2D,
-                                           GL_TEXTURE_WRAP_T, GL_REPEAT);   
+                                           GL_TEXTURE_WRAP_T, GL_REPEAT);
                 glTexImage2D(GL_TEXTURE_2D, 0, 4, tex1Width, tex1Height,
-                               0, GL_RGBA, GL_UNSIGNED_BYTE, myTile[10]);      
+                               0, GL_RGBA, GL_UNSIGNED_BYTE, myTile[10]);
                 glEnable(GL_TEXTURE_2D);
              }
 
              glBegin(GL_QUADS);
              {
               // ***** Right Wall *****
-        
+
               glNormal3f( 0.0F, 0.0F, 1.0F);
-              glTexCoord2f( 12.0F, 3.0F);glVertex3f( 0.24F,-0.32F,-1.0F); 
+              glTexCoord2f( 12.0F, 3.0F);glVertex3f( 0.24F,-0.32F,-1.0F);
               glTexCoord2f(  0.0F, 3.0F);glVertex3f( 0.24F,-0.32F, 3.0F);
-              glTexCoord2f(  0.0F, 0.0F);glVertex3f( 0.24F, 0.32F, 3.0F); 
+              glTexCoord2f(  0.0F, 0.0F);glVertex3f( 0.24F, 0.32F, 3.0F);
               glTexCoord2f( 12.0F, 0.0F);glVertex3f( 0.24F, 0.32F,-1.0F);
-        
-              // ***** Left Wall *****
-        
+
+             // ***** Left Wall *****
+
               glNormal3f( 0.0F, 0.0F, 1.0F);
-              glTexCoord2f( 12.0F, 3.0F);glVertex3f(-0.24F,-0.32F, 3.0F); 
+              glTexCoord2f( 12.0F, 3.0F);glVertex3f(-0.24F,-0.32F, 3.0F);
               glTexCoord2f(  0.0F, 3.0F);glVertex3f(-0.24F,-0.32F,-1.0F);
-              glTexCoord2f(  0.0F, 0.0F);glVertex3f(-0.24F, 0.32F,-1.0F); 
+              glTexCoord2f(  0.0F, 0.0F);glVertex3f(-0.24F, 0.32F,-1.0F);
               glTexCoord2f( 12.0F, 0.0F);glVertex3f(-0.24F, 0.32F, 3.0F);
              }
              glEnd();
-    
+
              glDisable(GL_TEXTURE_2D);
-             
+
              // ***** Ceiling Tiles *****
-    
+
              if (useTexture)
              {
                 glTexEnvi(GL_TEXTURE_ENV,
@@ -780,20 +780,20 @@ void draw_scene(void)
                 glTexParameteri(GL_TEXTURE_2D,
                                            GL_TEXTURE_WRAP_S, GL_REPEAT);
                 glTexParameteri(GL_TEXTURE_2D,
-                                           GL_TEXTURE_WRAP_T, GL_REPEAT);   
+                                           GL_TEXTURE_WRAP_T, GL_REPEAT);
                 glTexImage2D(GL_TEXTURE_2D, 0, 3, abwide[3], abhigh[3], 0,
                                            GL_RGB, GL_UNSIGNED_BYTE, myTile[3]);
                 glEnable(GL_TEXTURE_2D);
              }
 
              glBegin(GL_QUADS);
-             {  
+             {
               j=0;
               for (i=0; i<4; i++)
-              {       
+              {
                   x1 = 0.24f - (float)i * 0.12f;
                   x2 = x1 - 0.12f;
-        
+
                   for (k=0; k<27; k++)
                   {
                       if (j == 0)
@@ -808,23 +808,23 @@ void draw_scene(void)
                       }
                       z1 = -1.0f + (float)k * 0.15f;
                       z2 = z1 + 0.15f;
-        
+
                       glNormal3f( 0.0F, 0.0F, 1.0F);
                       glTexCoord2f(1.0F,1.0F); glVertex3f(x1, 0.32F, z2);
                       glTexCoord2f(0.0F,1.0F); glVertex3f(x2, 0.32F, z2);
-                      glTexCoord2f(0.0F,0.0F); glVertex3f(x2, 0.32F, z1); 
+                      glTexCoord2f(0.0F,0.0F); glVertex3f(x2, 0.32F, z1);
                       glTexCoord2f(1.0F,0.0F); glVertex3f(x1, 0.32F, z1);
                   }
-              }    
-             }    
+              }
+             }
              glEnd();
              if (useTexture)
              {
                  glDisable(GL_TEXTURE_2D);
              }
-    
+
             // ***** Floor Tiles *****
-    
+
              if (useTexture)
              {
                 glTexEnvi(GL_TEXTURE_ENV,
@@ -836,20 +836,20 @@ void draw_scene(void)
                 glTexParameteri(GL_TEXTURE_2D,
                                            GL_TEXTURE_WRAP_S, GL_REPEAT);
                 glTexParameteri(GL_TEXTURE_2D,
-                                           GL_TEXTURE_WRAP_T, GL_REPEAT);   
+                                           GL_TEXTURE_WRAP_T, GL_REPEAT);
                 glTexImage2D(GL_TEXTURE_2D, 0, 3, abwide[3], abhigh[3], 0,
                                            GL_BGR, GL_UNSIGNED_BYTE, myTile[3]);
                 glEnable(GL_TEXTURE_2D);
              }
 
              glBegin(GL_QUADS);
-             {    
+             {
               j=0;
               for (i=0; i<4; i++)
-              {       
+              {
                   x1 = 0.24f - (float)i * 0.12f;
                   x2 = x1 - 0.12f;
-        
+
                   for (k=0; k<27; k++)
                   {
                       if (j == 0)
@@ -864,15 +864,15 @@ void draw_scene(void)
                       }
                       z1 = -1.0f + (float)k * 0.15f;
                       z2 = z1 + 0.15f;
-        
+
                       glNormal3f( 0.0F, 0.0F, 1.0F);
                       glTexCoord2f(1.0F,1.0F); glVertex3f(x1,-0.32F, z1);
                       glTexCoord2f(0.0F,1.0F); glVertex3f(x2,-0.32F, z1);
-                      glTexCoord2f(0.0F,0.0F); glVertex3f(x2,-0.32F, z2); 
-                      glTexCoord2f(1.0F,0.0F); glVertex3f(x1,-0.32F, z2);   
+                      glTexCoord2f(0.0F,0.0F); glVertex3f(x2,-0.32F, z2);
+                      glTexCoord2f(1.0F,0.0F); glVertex3f(x1,-0.32F, z2);
                   }
-              }    
-             }    
+              }
+             }
              glEnd();
 
              if (useTexture)
@@ -884,9 +884,9 @@ void draw_scene(void)
           if (allObjects)
           {
              // ***** Tunnel Flyers Texture *****
-       
+
              glPushMatrix();  // flyers
-             { 
+             {
               for (f=0; f<flyers; f++)
               {
                  if (useTexture)
@@ -897,23 +897,23 @@ void draw_scene(void)
                         chgTex = FALSE;
                      }
                      else
-                     {                
-                        glTexImage2D(GL_TEXTURE_2D, 0, 3, abwide[1], abhigh[1], 0, GL_BGR, GL_UNSIGNED_BYTE, myTile[1]); 
+                     {
+                        glTexImage2D(GL_TEXTURE_2D, 0, 3, abwide[1], abhigh[1], 0, GL_BGR, GL_UNSIGNED_BYTE, myTile[1]);
                         chgTex = TRUE;
                      }
                      glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
                      glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
                      glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
-                     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);            
+                     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
                      glEnable(GL_TEXTURE_2D);
                  }
-        
+
               // ***** Flyers *****
-    
+
                   ff = (float)(f+1)/(float)flyers;
-                  glColor3f(1.0f, 0.5f*ff, 1.0f-ff);   
+                  glColor3f(1.0f, 0.5f*ff, 1.0f-ff);
                   glRotatef(sphere2.fXr/(float)(f+2), 0.01f, 0.0f, 1.0f);
-                
+
                   glBegin(GL_QUADS);
                   {
                      px = -0.1f;
@@ -925,45 +925,45 @@ void draw_scene(void)
                      glTexCoord2f(0.0F, 1.0F); glVertex3f(px-pi, py,  pz);
                      glTexCoord2f(0.0F, 0.0F); glVertex3f(px-pi, py-pi,  pz);
                      glTexCoord2f(1.0F, 0.0F); glVertex3f(px, py-pi,  pz);
-                   
+
                   }
                   glEnd();
               }
-    
+
               if (useTexture)
               {
                   glDisable(GL_TEXTURE_2D);
               }
              }
-             glPopMatrix();  // flyers   
-          }    
+             glPopMatrix();  // flyers
+          }
         }
         glPopAttrib();   // tunnel
         glPopMatrix();
 
         // ***** Back Scene *****
-    
+
           if (allObjects)
           {
             // ***** Cubes ******
-          
+
             glPushMatrix();
             glPushAttrib(GL_TEXTURE_BIT);  // cubes
-            {      
+            {
                 glMatrixMode( GL_PROJECTION );
                 glLoadIdentity();
                 gluPerspective(45, 1, 0.01, 150);
                 gluLookAt(eyeX, eyeY, eyeZ-30, 0, 0, 0, upX, upY, upZ);
-                
+
                 glMatrixMode( GL_MODELVIEW );
                 glLoadIdentity();
-                           
+
                 glShadeModel( GL_SMOOTH );
-    
+
                 // ***** Cube Texture *****
-    
+
                 if (useTexture)
-                {            
+                {
                     glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
                     glTexParameteri(GL_TEXTURE_2D,
                                        GL_TEXTURE_MIN_FILTER, GL_LINEAR);
@@ -972,63 +972,63 @@ void draw_scene(void)
                     glTexParameteri(GL_TEXTURE_2D,
                                            GL_TEXTURE_WRAP_S, GL_REPEAT);
                     glTexParameteri(GL_TEXTURE_2D,
-                                           GL_TEXTURE_WRAP_T, GL_REPEAT);   
+                                           GL_TEXTURE_WRAP_T, GL_REPEAT);
                     glTexImage2D(GL_TEXTURE_2D, 0, 3, abwide[3], abhigh[3], 0,
                                            GL_RGB, GL_UNSIGNED_BYTE, myTile[3]);
-    
+
                     glEnable(GL_TEXTURE_2D);
                 }
                 w1 = 1.0;
                 z1 = 5.5; // 0.5;
                 z2 = z1 - w1;
-                
+
                 glRotatef(sphere1.fYr/3, 0.5f, 0.0f, 0.0f);
                 glRotatef(sphere1.fZr/3, 0.0f, 0.0f, 1.0f);
-     
+
                 // **** 4 Cubes *****
-                
+
                 for (i=0; i<20; i++)
                 {
                     glColor3f(1.0f, 1.0f/(float)i, 0.0f);
-                    
+
                     x1 = xpos[i];
                     y1 = ypos[i];
                     x2 = x1 - w1;
                     y2 = y1 - w1;
-                    
+
                     glRotatef(sphere1.fYr/(i+3), 0.0f, 1.0f, 0.0f);
-      
+
                     glBegin(GL_QUADS);
                     glNormal3f( 0.0F, 0.0F, 1.0F);
                     glTexCoord2f( 1.0F, 1.0F); glVertex3f( x1, y1, z1);
                     glTexCoord2f( 0.0F, 1.0F); glVertex3f( x2, y1, z1);
                     glTexCoord2f( 0.0F, 0.0F); glVertex3f( x2, y2, z1);
                     glTexCoord2f( 1.0F, 0.0F); glVertex3f( x1, y2, z1);
-                
+
                     glNormal3f( 0.0F, 0.0F, -1.0F);
                     glTexCoord2f( 1.0F, 1.0F); glVertex3f( x2, y2, z2);
                     glTexCoord2f( 0.0F, 1.0F); glVertex3f( x2, y1, z2);
                     glTexCoord2f( 0.0F, 0.0F); glVertex3f( x1, y1, z2);
                     glTexCoord2f( 1.0F, 0.0F); glVertex3f( x1, y2, z2);
-                
+
                     glNormal3f( 0.0F, 1.0F, 0.0F);
                     glTexCoord2f( 1.0F, 1.0F); glVertex3f( x1, y1, z1);
                     glTexCoord2f( 0.0F, 1.0F); glVertex3f( x1, y1, z2);
                     glTexCoord2f( 0.0F, 0.0F); glVertex3f( x2, y1, z2);
                     glTexCoord2f( 1.0F, 0.0F); glVertex3f( x2, y1, z1);
-                
+
                     glNormal3f( 0.0F, 1.0F, 0.0F);
                     glTexCoord2f( 1.0F, 1.0F); glVertex3f( x2, y2, z2);
                     glTexCoord2f( 0.0F, 1.0F); glVertex3f( x1, y2, z2);
                     glTexCoord2f( 0.0F, 0.0F); glVertex3f( x1, y2, z1);
                     glTexCoord2f( 1.0F, 0.0F); glVertex3f( x2, y2, z1);
-                
+
                     glNormal3f( 1.0F, 0.0F, 0.0F);
                     glTexCoord2f( 1.0F, 1.0F); glVertex3f( x1, y1, z1);
                     glTexCoord2f( 0.0F, 1.0F); glVertex3f( x1, y2, z1);
                     glTexCoord2f( 0.0F, 0.0F); glVertex3f( x1, y2, z2);
                     glTexCoord2f( 1.0F, 0.0F); glVertex3f( x1, y1, z2);
-                
+
                     glNormal3f( 1.0F, 0.0F, 0.0F);
                     glTexCoord2f( 1.0F, 1.0F); glVertex3f( x2, y2, z2);
                     glTexCoord2f( 0.0F, 1.0F); glVertex3f( x2, y2, z1);
@@ -1036,54 +1036,54 @@ void draw_scene(void)
                     glTexCoord2f( 1.0F, 0.0F); glVertex3f( x2, y1, z2);
                    glEnd();
                 }
-    
+
                 if (useTexture)
-                {            
+                {
                     glDisable(GL_TEXTURE_2D);
                 }
-            }    
+            }
             glPopAttrib(); // cubes
             glPopMatrix();
           }
 
           // ***** Eggs *****
-            
+
          glPushMatrix();
          glPushAttrib(GL_TEXTURE_BIT);  // eggs
          {
                  if (useTexture)
                  {
-                     glTexImage2D(GL_TEXTURE_2D, 0, 3, abwide[2], abhigh[2], 0, GL_BGR, GL_UNSIGNED_BYTE, myTile[2]); 
+                     glTexImage2D(GL_TEXTURE_2D, 0, 3, abwide[2], abhigh[2], 0, GL_BGR, GL_UNSIGNED_BYTE, myTile[2]);
                      glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
                      glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
                      glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
                      glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-                     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);            
+                     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
                      glEnable(GL_TEXTURE_2D);
                  }
-    
+
             // ***** Egg 1 *****
-            
+
             glRotatef(0.0f, 1.0f, 0.0f, 0.0f);
             glRotatef(sphere1.fYr, 0.0f, 1.0f, 0.0f);
             glRotatef(sphere1.fZr, 0.0f, 0.0f, 1.0f);
-        
+
             glMatrixMode( GL_PROJECTION );
             glLoadIdentity();
-        
+
             gluPerspective(120, aspect, 0.01, 150);
-        
+
             glLightfv(GL_LIGHT0, GL_POSITION, light0Pos2);
-    
+
             if (allObjects)
-            {       
+            {
                 gluLookAt(eyeX, eyeY, eyeZ-eMod1, centreX, centreY, centreZ, upX, upY, upZ);
             }
             else
             {
                 gluLookAt(eyeX, eyeY, eyeZ-eMod1, 0, 0, centreZ, upX, upY, upZ);
             }
-    
+
             glMatrixMode( GL_MODELVIEW );
             glColor3f(1.0F, 0.0F, 0.0F);
             drawSphere(0);
@@ -1091,51 +1091,51 @@ void draw_scene(void)
             if (allObjects)
             {
                 glShadeModel(GL_FLAT);
-            
+
                 // ***** Egg 2 *****
-    
+
                 glRotatef(sphere1.fXr*2, 1.0f, 0.0f, 0.0f);
                 glRotatef(0, 0.0f, 1.0f, 0.0f);
                 glRotatef(sphere1.fZr, 0.0f, 0.0f, 1.0f);
-            
+
                 glMatrixMode( GL_PROJECTION );
                 glLoadIdentity();
                 gluPerspective(110, aspect, 0.01, 150);
-        
+
                 gluLookAt(eyeX, eyeY, eyeZ-eMod2, -centreX,
                                        -centreY, centreZ, upX, upY, upZ);
                 glMatrixMode( GL_MODELVIEW );
                 glColor3f(0.0F, 1.0F, 0.0F);
                 drawSphere(0);
-                    
+
                 glShadeModel( GL_SMOOTH );
-            
+
                 // ***** Egg 3 *****
-    
+
                 glRotatef(0, 1.0f, 0.0f, 0.0f);
                 glRotatef(sphere1.fYr*1.5f, 0.0f, 1.0f, 0.0f);
                 glRotatef(sphere1.fZr, 0.0f, 0.0f, 1.0f);
-            
+
                 glMatrixMode( GL_PROJECTION );
                 glLoadIdentity();
                 gluPerspective(130, aspect, 0.01, 150);
-        
+
                 gluLookAt(eyeX, eyeY, eyeZ-eMod3,
                               -centreX, centreY, centreZ, upX, upY, upZ);
                 glMatrixMode( GL_MODELVIEW );
                 glColor3f(1.0F, 1.0F, 0.0F);
-                drawSphere(0);    
-        
+                drawSphere(0);
+
                 // ***** Egg 4 *****
-                
+
                 glRotatef(sphere1.fXr, 1.0f, 0.0f, 0.0f);
                 glRotatef(sphere1.fYr, 0.0f, 1.0f, 0.0f);
                 glRotatef(sphere1.fZr*2, 0.0f, 0.0f, 1.0f);
-                
+
                 glMatrixMode( GL_PROJECTION );
                 glLoadIdentity();
                 gluPerspective(140, aspect, 0.01, 150);
-        
+
                 gluLookAt(eyeX, eyeY, eyeZ-eMod4, centreX,
                                        -centreY, centreZ, upX, upY, upZ);
                 glMatrixMode( GL_MODELVIEW );
@@ -1143,9 +1143,9 @@ void draw_scene(void)
                 drawSphere(0);
             }
             if (useTexture)
-            {            
+            {
                glDisable(GL_TEXTURE_2D);
-            }         
+            }
          }
          glPopAttrib();  // eggs
          glPopMatrix();
@@ -1155,25 +1155,25 @@ void draw_scene(void)
         if (loopDraw == 5)
         {
             // ***** Outside grass and sky *****
-            
+
             glPushMatrix();
             glPushAttrib(GL_TEXTURE_BIT);
-    
+
             // ***** Texture *****
-            
+
                 glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER,GL_NEAREST );
                 glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER,GL_NEAREST );
                 glTexImage2D( GL_TEXTURE_2D, 0, 3, abwide[9], abhigh[9],
                                      0, GL_BGR, GL_UNSIGNED_BYTE, myTile[9] );
-    
+
                 glMatrixMode( GL_PROJECTION );
                 glLoadIdentity();
                 gluPerspective(45, 1, 0.01, 150);
                 gluLookAt(eyeX, eyeY, eyeMoZ, 0, 0, 0, upX, upY, upZ);
                 glMatrixMode( GL_MODELVIEW );
-                glLoadIdentity();          
+                glLoadIdentity();
                 glShadeModel( GL_SMOOTH );
-    
+
                 glEnable( GL_TEXTURE_2D );
                 glBegin( GL_QUADS );
                 glNormal3f( 0.0f, 0.0f, 1.0f);
@@ -1183,7 +1183,7 @@ void draw_scene(void)
                 glTexCoord2f( 0.0f, 1.0f ); glVertex3f( -70.0f,  70.0f,  -140.0f );
                 glEnd();
                 glDisable(GL_TEXTURE_2D);
-    
+
             glPopAttrib();
             glPopMatrix();
         }
@@ -1193,21 +1193,21 @@ void draw_scene(void)
            angleX = degree * 1.1;
         }
         else
-        {  
+        {
             angleX = degree + leftRight;
             if (fabs(angleX) < 0.1) angleX = 0;
         }
 
         rotator = rotator + angleX;
-      
+
         if (rotator > 360)
         {
             rotator = 0;
-        } 
+        }
         if (rotator < -360)
         {
             rotator = 0;
-        } 
+        }
         rotate2 = rotator;
         if (rotator < 0) rotate2 = 360 + rotator;
         if (rotate2 > 315)
@@ -1240,7 +1240,7 @@ void draw_scene(void)
         }
         glRotatef(angleX, 0.0f, 1.0f, 0.0f);
         glMatrixMode( GL_PROJECTION );
-        glLoadIdentity();    
+        glLoadIdentity();
         gluPerspective(90, aspect, 0.01, 5000);
         gluLookAt(0, 10.0, 50.0 + foreBack * 8, 0, 0.1, -100, 0, 1, 0); // 180+ not 50
         glMatrixMode( GL_MODELVIEW );               // -100
@@ -1337,12 +1337,12 @@ void draw_scene(void)
         // Floor
         if (useTexture) tileSurface(x1, x2, y1, y2, z1, z2, 12, 12,
                                         (int)tile5W, (int)tile5H, useTile5, 0);
-        
+
         shadeIt = FALSE;
         glColor4f(1.0F, 1.0F, 1.0F, 1.0f);
         roomWalls(x1, x2, y1, y2, z1, z2, wallL, wallR, wallF, wallB);
     }
-    
+
     sphere1.fXr += degree*6;
     sphere1.fYr += degree*8;
     sphere1.fZr += degree/2;
@@ -1366,7 +1366,7 @@ void draw_scene(void)
     {
         eyeZ = 0.001;
         whichWay5 = 1.0;
-    }   
+    }
     if (eMod1 > 18)
     {
         whichWay1 = - 1.0;
@@ -1419,8 +1419,8 @@ void draw_scene(void)
             {
                  sprintf (title, " OpenGL Benchmark -%s %d x %d, Running at %d FPS",
                          testTitle, screenWide, screenHigh, (int)fps);
-            } 
-            glutSetWindowTitle(title);    
+            }
+            glutSetWindowTitle(title);
             tempSecs = secs;
             dispSecs = dispSecs + 0.5;
             tempCount = 0.0;
@@ -1433,13 +1433,13 @@ void draw_scene(void)
             degree = 25.0 / frameCount;
             if (degree > 5.0) degree = 5.0;
             sprintf (title, " OpenGL Benchmark -%s %d x %d, Initial FPS = %d",
-                      testTitle, screenWide, screenHigh, (int)(frameCount/secs)); 
+                      testTitle, screenWide, screenHigh, (int)(frameCount/secs));
             glutSetWindowTitle(title);
             if (runMins > 0.0)
             {
                 printf(" %s Test for %d minutes\n\n", testTitle, (int)runMins);
                 fprintf(outfile, " %s Test for %d minutes\n\n", testTitle, (int)runMins);
-            }   
+            }
             frameCount = 0.0;
             calibrate = FALSE;
             doTime = TRUE;
@@ -1459,7 +1459,7 @@ void draw_scene(void)
                 doTime = TRUE;
                 runSecs2 = runSecs;
                 tempSecs = 0.0;
-                tempCount = 0.0;         
+                tempCount = 0.0;
                 dispSecs = 0.5;
             }
             else
@@ -1517,7 +1517,7 @@ void draw_scene(void)
             fflush (outfile);
             fflush (stdout);
             fclose (outfile);
-            _mm_free(mem);    
+            _mm_free(mem);
             exit(0);
         }
     }
@@ -1544,7 +1544,7 @@ void processSpecialKeys(int key, int x, int y)
                        leftRight = leftRight - 0.1;
                        break;
                 case GLUT_KEY_RIGHT :
-                       leftRight = leftRight + 0.1; 
+                       leftRight = leftRight + 0.1;
                        break;
         }
 }
@@ -1570,15 +1570,15 @@ void init(void)
     loadBMP("grass.bmp", 9);
 
     glEnable(GL_CULL_FACE);
-    
+
     glEnableClientState(GL_VERTEX_ARRAY);
     glEnableClientState(GL_NORMAL_ARRAY);
     glEnableClientState(GL_COLOR_ARRAY);
-    
+
     glColorMaterial(GL_FRONT, GL_AMBIENT_AND_DIFFUSE);
     glEnable(GL_COLOR_MATERIAL);
 
-    glShadeModel( GL_SMOOTH ); 
+    glShadeModel( GL_SMOOTH );
 
     aspect = (float)screenWide / (float)screenHigh;
 
@@ -1615,7 +1615,7 @@ void main(int argc, char **argv)
                    }
                 }
                 break;
-                
+
                 case 'H':
                 if (argc > i+1)
                 {
@@ -1683,7 +1683,7 @@ void main(int argc, char **argv)
         noEnd = FALSE;
         runSecs = 30;
         repeats = (int)(runMins * 2.0);
-   
+
         if (oneTest == 0)
         {
             loopDraw = 3;
@@ -1709,7 +1709,7 @@ void main(int argc, char **argv)
         {
             fprintf(outfile, "%s \n", configdata[i]);
         }
-    
+
         printf ("\n  Graphics (command - lspci | grep -i vga > vga.txt)\n");
         fprintf (outfile, "\n  Graphics (command - lspci | grep -i vga > vga.txt)\n");
         char acmd[200];
@@ -1730,7 +1730,7 @@ void main(int argc, char **argv)
                     if (acmd[i] == 'V') break;
                 }
                 if (i < strlen(acmd))
-                { 
+                {
                     printf ("  %s\n", acmd+i);
                     fprintf (outfile, "  %s\n", acmd+i);
                 }
@@ -1747,35 +1747,35 @@ void main(int argc, char **argv)
             }
             fclose (infile);
        }
-        
+
        local_time();
        if (runMins > 0.0)
        {
-            printf(" ##########################################\n"); 
+            printf(" ##########################################\n");
             printf(" Linux OpenGL Reliability Test %s, %s\n", version, timeday);
             fprintf(outfile, " #####################################################################\n\n");
             fprintf(outfile, " OpenGL Reliability Test %s, %s\n", version, timeday);
-            printf(" Display %d x %d", screenWide, screenHigh);      
+            printf(" Display %d x %d", screenWide, screenHigh);
             fprintf(outfile, " Display %d x %d", screenWide, screenHigh);
        }
        else if (oneTest == 1)
        {
-            printf(" ##########################################\n"); 
+            printf(" ##########################################\n");
             printf(" Linux OpenGL Benchmark %s, %s\n", version, timeday);
             fprintf(outfile, " #####################################################################\n\n");
             fprintf(outfile, " OpenGL Benchmark %s, %s\n", version, timeday);
        }
        else
        {
-            printf(" ##########################################\n"); 
+            printf(" ##########################################\n");
             printf(" Linux OpenGL Benchmark %s, %s\n", version, timeday);
-            printf("          Running Time Approximately %d Seconds Each Test\n\n", (int)runSecs); 
+            printf("          Running Time Approximately %d Seconds Each Test\n\n", (int)runSecs);
             printf(" Window Size  Coloured Objects  Textured Objects  WireFrm  Texture\n");
             printf("    Pixels        Few      All      Few      All  Kitchen  Kitchen\n");
             printf("  Wide  High      FPS      FPS      FPS      FPS      FPS      FPS\n\n");
             fprintf(outfile, " #####################################################################\n\n");
             fprintf(outfile, " Linux OpenGL Benchmark %s, %s\n", version, timeday);
-            fprintf(outfile, "          Running Time Approximately %d Seconds Each Test\n\n", (int)runSecs); 
+            fprintf(outfile, "          Running Time Approximately %d Seconds Each Test\n\n", (int)runSecs);
             fprintf(outfile, " Window Size  Coloured Objects  Textured Objects  WireFrm  Texture\n");
             fprintf(outfile, "    Pixels        Few      All      Few      All  Kitchen  Kitchen\n");
             fprintf(outfile, "  Wide  High      FPS      FPS      FPS      FPS      FPS      FPS\n\n");
@@ -1783,7 +1783,7 @@ void main(int argc, char **argv)
     }
     if (runMins == 0.0)
     {
-        printf("%6d%6d", screenWide, screenHigh);      
+        printf("%6d%6d", screenWide, screenHigh);
         fprintf(outfile, "%6d%6d", screenWide, screenHigh);
     }
     fflush (outfile);
@@ -1804,9 +1804,9 @@ void main(int argc, char **argv)
 
     glutInitWindowPosition(0, 0);
     glutInitWindowSize(screenWide, screenHigh);
-    sprintf (title, " OpenGL Benchmark at %d x %d", screenWide, screenHigh); 
+    sprintf (title, " OpenGL Benchmark at %d x %d", screenWide, screenHigh);
     glutCreateWindow(title);
- 
+
     // register callbacks
     glutDisplayFunc(draw_scene);
     glutReshapeFunc(changeSize);
@@ -1824,7 +1824,7 @@ void sidey(float x1, float x2, float y1,
            float y2, float z1, float z2)
 {
      x1 = x1;
-                 
+
      glPushMatrix();
       if (shadeIt)
       {
@@ -1833,7 +1833,7 @@ void sidey(float x1, float x2, float y1,
       else
       {
           glBegin(GL_LINE_STRIP);
-      }           
+      }
       glNormal3f( 0.0F, 1.0F, 0.0F); // 0 0 1
       glTexCoord2f( 1.0F, 1.0F); glVertex3f( x2, y2, z2);
       glTexCoord2f( 0.0F, 1.0F); glVertex3f( x2, y2, z1);
@@ -1841,15 +1841,15 @@ void sidey(float x1, float x2, float y1,
       glTexCoord2f( 1.0F, 0.0F); glVertex3f( x2, y1, z2);
       glTexCoord2f( 1.0F, 1.0F); glVertex3f( x2, y2, z2);
       glEnd();
-      lines = lines + 4;        
-    glPopMatrix();
+      lines = lines + 4;
+     glPopMatrix();
 }
 
 void sidex(float x1, float x2, float y1,
            float y2, float z1, float z2)
 {
      x1 = x1;
-                 
+
      glPushMatrix();
       if (shadeIt)
       {
@@ -1858,15 +1858,15 @@ void sidex(float x1, float x2, float y1,
       else
       {
           glBegin(GL_LINE_STRIP);
-      }           
+      }
       glNormal3f( 0.0F, 1.0F, 0.0F); // 0 0 1
       glTexCoord2f(1.0F,1.0F); glVertex3f(x2, y2, z1);
       glTexCoord2f(0.0F,1.0F); glVertex3f(x2, y2, z2);
-      glTexCoord2f(0.0F,0.0F); glVertex3f(x2, y1, z2); 
-      glTexCoord2f(1.0F,0.0F); glVertex3f(x2, y1, z1);   
+      glTexCoord2f(0.0F,0.0F); glVertex3f(x2, y1, z2);
+      glTexCoord2f(1.0F,0.0F); glVertex3f(x2, y1, z1);
       glTexCoord2f(1.0F,1.0F); glVertex3f(x2, y2, z1);
       glEnd();
-      lines = lines + 4;        
+      lines = lines + 4;
     glPopMatrix();
 }
 
@@ -1883,7 +1883,7 @@ void facey(float x1, float x2, float y1,
       else
       {
           glBegin(GL_LINE_STRIP);
-      }           
+      }
       glNormal3f( 0.0F, 1.0F, 0.0F);
       glTexCoord2f( 1.0F, 1.0F); glVertex3f( x2, y2, z1);
       glTexCoord2f( 0.0F, 1.0F); glVertex3f( x2, y1, z1);
@@ -1893,13 +1893,13 @@ void facey(float x1, float x2, float y1,
       glEnd();
       lines = lines + 4;
     glPopMatrix();
-}           
+}
 
 void facex(float x1, float x2, float y1,
            float y2, float z1, float z2)
 {
      z2 = z2;
-     
+
      glPushMatrix();
       if (shadeIt)
       {
@@ -1908,17 +1908,17 @@ void facex(float x1, float x2, float y1,
       else
       {
           glBegin(GL_LINE_STRIP);
-      }           
+      }
       glNormal3f( 0.0F, 1.0F, 0.0F); // 0 0 1
       glTexCoord2f(1.0F,1.0F); glVertex3f(x1, y1, z1);
       glTexCoord2f(0.0F,1.0F); glVertex3f(x2, y1, z1);
-      glTexCoord2f(0.0F,0.0F); glVertex3f(x2, y2, z1); 
-      glTexCoord2f(1.0F,0.0F); glVertex3f(x1, y2, z1);   
+      glTexCoord2f(0.0F,0.0F); glVertex3f(x2, y2, z1);
+      glTexCoord2f(1.0F,0.0F); glVertex3f(x1, y2, z1);
       glTexCoord2f(1.0F,1.0F); glVertex3f(x1, y1, z1);
       glEnd();
-      lines = lines + 4;        
+      lines = lines + 4;
     glPopMatrix();
-}           
+}
 
 
 void flatx(float x1, float x2, float y1,
@@ -1933,12 +1933,12 @@ void flatx(float x1, float x2, float y1,
       else
       {
           glBegin(GL_LINE_STRIP);
-      }                      
+      }
       glNormal3f( 0.0F, 1.0F, 0.0F); // 0 0 1
       glTexCoord2f(1.0F,1.0F); glVertex3f(x1, y1, z1);
       glTexCoord2f(0.0F,1.0F); glVertex3f(x1, y1, z2);
-      glTexCoord2f(0.0F,0.0F); glVertex3f(x2, y1, z2); 
-      glTexCoord2f(1.0F,0.0F); glVertex3f(x2, y1, z1);   
+      glTexCoord2f(0.0F,0.0F); glVertex3f(x2, y1, z2);
+      glTexCoord2f(1.0F,0.0F); glVertex3f(x2, y1, z1);
       glTexCoord2f(1.0F,1.0F); glVertex3f(x1, y1, z1);
       glEnd();
       lines = lines + 4;
@@ -1957,7 +1957,7 @@ void flaty(float x1, float x2, float y1,
       else
       {
           glBegin(GL_LINE_STRIP);
-      }                      
+      }
       glNormal3f( 0.0F, 1.0F, 0.0F); // 0 0 1
       glTexCoord2f( 1.0F, 1.0F); glVertex3f( x2, y1, z2);
       glTexCoord2f( 0.0F, 1.0F); glVertex3f( x1, y1, z2);
@@ -1982,14 +1982,14 @@ void boxA(float ri, float le, float to,
     {
       glBegin(GL_LINE_STRIP);
     }
-    if (doHandle) glColor3f(handr*0.9f, handg*0.9f, handb*0.9f);                                   
+    if (doHandle) glColor3f(handr*0.9f, handg*0.9f, handb*0.9f);
     glNormal3f( 0.0F, 1.0F, 0.0F); // 0 0 1
     glTexCoord2f( 1.0F, 1.0F); glVertex3f( ri, to, fr);
     glTexCoord2f( 0.0F, 1.0F); glVertex3f( le, to, fr);
     glTexCoord2f( 0.0F, 0.0F); glVertex3f( le, bo, fr);
     glTexCoord2f( 1.0F, 0.0F); glVertex3f( ri, bo, fr);
     glTexCoord2f( 1.0F, 1.0F); glVertex3f( ri, to, fr);
-    if (doHandle) glColor3f(handr, handg, handb);                                   
+    if (doHandle) glColor3f(handr, handg, handb);
     glEnd();
     lines = lines + 4;
     if (shadeIt)
@@ -1999,15 +1999,15 @@ void boxA(float ri, float le, float to,
     else
     {
       glBegin(GL_LINE_STRIP);
-    }                                   
-    if (doHandle) glColor3f(handr*0.9f, handg*0.9f, handb*0.9f);                                   
+    }
+    if (doHandle) glColor3f(handr*0.9f, handg*0.9f, handb*0.9f);
     glNormal3f( 0.0F, 1.0F, 0.0F); // 0 0 0.8
     glTexCoord2f( 1.0F, 1.0F); glVertex3f( le, bo, ba);
     glTexCoord2f( 0.0F, 1.0F); glVertex3f( le, to, ba);
     glTexCoord2f( 0.0F, 0.0F); glVertex3f( ri, to, ba);
     glTexCoord2f( 1.0F, 0.0F); glVertex3f( ri, bo, ba);
     glTexCoord2f( 1.0F, 1.0F); glVertex3f( le, bo, ba);
-    if (doHandle) glColor3f(handr, handg, handb);                                   
+    if (doHandle) glColor3f(handr, handg, handb);
     glEnd();
     lines = lines + 4;
     if (shadeIt)
@@ -2017,7 +2017,7 @@ void boxA(float ri, float le, float to,
     else
     {
       glBegin(GL_LINE_STRIP);
-    }                                   
+    }
     glNormal3f( 0.0F,  1.0F, 0.0F); // 0 2 0
     glTexCoord2f( 1.0F, 1.0F); glVertex3f( ri, to, fr);
     glTexCoord2f( 0.0F, 1.0F); glVertex3f( ri, to, ba);
@@ -2033,7 +2033,7 @@ void boxA(float ri, float le, float to,
     else
     {
       glBegin(GL_LINE_STRIP);
-    }                                   
+    }
     glNormal3f( 0.0F, 1.0F, 0.0F); // 0 1 0
     glTexCoord2f( 1.0F, 1.0F); glVertex3f( le, bo, ba);
     glTexCoord2f( 0.0F, 1.0F); glVertex3f( ri, bo, ba);
@@ -2050,7 +2050,7 @@ void boxA(float ri, float le, float to,
     else
     {
       glBegin(GL_LINE_STRIP);
-    }                                   
+    }
     glNormal3f( 0.0F, 1.0F, 0.0F); // 1 0 0
     glTexCoord2f( 1.0F, 1.0F); glVertex3f( ri, to, fr);
     glTexCoord2f( 0.0F, 1.0F); glVertex3f( ri, bo, fr);
@@ -2066,7 +2066,7 @@ void boxA(float ri, float le, float to,
     else
     {
       glBegin(GL_LINE_STRIP);
-    }                                   
+    }
     glNormal3f( 0.0F, 1.0F, 0.0F); // 1 0 0
     glTexCoord2f( 1.0F, 1.0F); glVertex3f( le, bo, ba);
     glTexCoord2f( 0.0F, 1.0F); glVertex3f( le, bo, fr);
@@ -2104,7 +2104,7 @@ void roomWalls(float x1, float x2, float y1,
     sidex(0, x1+wallR, y1, y2, z2-wallB, z2);
     facex(x1+wallR, x2-wallL, y1, y2, z2-wallB, 0);
 
-}               
+}
 
 
 
@@ -2226,7 +2226,7 @@ void frameW(float x1, float x2, float y1,
         newLorF = z2 - x2 + fromLorF;
         newIn = x1 - z1 + inset;
         newBar = upBarIn;
-        newWide2 = wide2;        
+        newWide2 = wide2;
     }
     side1 = x2 + newLorF;
     side2 = x2 + newLorF + wide2;
@@ -2244,14 +2244,14 @@ void frameW(float x1, float x2, float y1,
     back2 = z1 + newIn+deepM;
     back3 = z1 + newIn+deepM*2/3;
     back4 = back2;
-    
+
     if (fill & noBottom) up3 = up1;
-    
+
     if (fill & newTop)
     {
         up4 = y2 + floorUp + highM - deepLS;
     }
-    
+
     glPushMatrix();
     glRotatef(angle, 0, 1, 0);
 
@@ -2271,7 +2271,7 @@ void frameW(float x1, float x2, float y1,
     sidex(0, side1, up1, up2, back2, back1); // left out
     sidex(0, side2, up4, up3, back2, back1); // left
     sidey(0, side3, up4, up3, back2, back1); // right
-        
+
     glColor3f(framer*0.95f, frameg*0.95f, frameb*0.95f); // 0.7
     if (!(fill & noBottom))
     {
@@ -2281,7 +2281,7 @@ void frameW(float x1, float x2, float y1,
     {
        glColor3f(framer*0.85f, frameg*0.85f, frameb*0.85f); // 0.6
        flaty(side3, side2, up4, 0, back4, back1); // top
-    }    
+    }
 
     glColor3f(framer, frameg, frameb);
     if (fill & upBar)
@@ -2291,7 +2291,7 @@ glColor3f(ceilr, ceilg, ceilb);
     }
     boxA(side1, side2, up1, up2, back2, back1); // right
     boxA(side3, side4, up1, up2, back2, back1); // left
-               
+
     if (!(fill & noTop))
     {
        boxA(side3, side2, up2, up4, back4, back1); // top
@@ -2308,11 +2308,11 @@ glColor3f(ceilr, ceilg, ceilb);
     {
 //      glColor3f(winr, wing, winb);
 //      facey(side3, side2, up4, up3, back3, 0);
-    } 
+    }
     if (fill & backIn)
     {
       glColor3f(framer*0.8f, frameg*0.8f, frameb*0.8f); // 0.5
-    } 
+    }
     glPopMatrix();
 
 } // frameW
@@ -2325,12 +2325,12 @@ void door2(float x1, float x2, float y1,
     frameb = doorb;
 
     if (useTexture) shadeIt = TRUE;
-    
+
     frameW(x1, x2, y1, y2, z1, z2, type, fill);
 
     shadeIt = FALSE;
 
-    framer = fram2r;    
+    framer = fram2r;
     frameg = fram2g;
     frameb = fram2b;
 }
@@ -2339,7 +2339,7 @@ void door3(float x1, float x2, float y1,
            float y2, float z1, float z2, int type, int fill)
 {
     float hi, wi, fl, ff, ins;
-    
+
     if (useTexture) shadeIt = TRUE;
     doHandle = TRUE;
     hi = highM;
@@ -2423,12 +2423,12 @@ void door3(float x1, float x2, float y1,
     fromLorF = fromLorF + wide2;
     floorUp = floorUp + wide2;
     deepM = deepMc;
-    glColor3f(cdorr, cdorg, cdorb); 
+    glColor3f(cdorr, cdorg, cdorb);
     door(x1, x2, y1, y2, z1, z2, type, 0);
 
     shadeIt = FALSE;
 
-    framer = fram2r;    
+    framer = fram2r;
     frameg = fram2g;
     frameb = fram2b;
 
@@ -2470,7 +2470,7 @@ void door(float x1, float x2, float y1,
         newIn = x1 - z1 + inset;
     }
 
-    side1  = x2 + newLorF; 
+    side1  = x2 + newLorF;
     side2  = x2 + newLorF + wideM;
     up2    = y2 + floorUp + highM;
     up1    = y2 + floorUp;
@@ -2482,7 +2482,7 @@ void door(float x1, float x2, float y1,
 
    if (fill == 0)
    {
-       boxA(side1, side2, up2, up1, side3, side4);            
+       boxA(side1, side2, up2, up1, side3, side4);
    }
    else
    {
@@ -2552,10 +2552,10 @@ void plynth(float x1, float x2, float y1,
     glRotatef(angle, 0, 1, 0);
 
     boxA(side1, side2, up1, up2, back2, back1); // right
-    boxA(side3, side4, up1, up2, back2, back1); // left           
+    boxA(side3, side4, up1, up2, back2, back1); // left
     boxA(side3, side2, up1, up2, back3, back1); // front
     boxA(side3, side2, up1, up2, back4, back2); // back
- 
+
     glPopMatrix();
 
     shadeIt = FALSE;
@@ -2596,7 +2596,7 @@ void workTop(float x1, float x2, float y1,
         newIn = x1 - z1 + inset;
     }
 
-    side1  = x2 + newLorF; 
+    side1  = x2 + newLorF;
     side2  = x2 + newLorF + wideM;
     up2    = y2 + floorUp + highM;
     up1    = y2 + floorUp;
@@ -2612,10 +2612,10 @@ void workTop(float x1, float x2, float y1,
     {
        glPushMatrix();
        if (useTexture) tileSurface(side2, side1, up2, up2, side4,
-                 side3, tile8W, tile8H, alignD, alignW, useTile8, 0); 
+                 side3, tile8W, tile8H, alignD, alignW, useTile8, 0);
        shadeIt = FALSE;
        glColor3f(wedgr, wedgg, wedgb);
-       boxA(side1, side2, up2, up1, side3, side4);     
+       boxA(side1, side2, up2, up1, side3, side4);
        glPopMatrix();
     }
     else
@@ -2647,14 +2647,14 @@ void table(float x1, float x2, float y1,
     fill = fill;
 
     if (useTexture) shadeIt = TRUE;
-    
+
     deepM = 35;
     fromWall = fromWall + deepM;
     floorUp = 28.5;
     highM = 1.5;
     wideM = 52;
     inset = -fromWall;
-    wideL = 2.5; 
+    wideL = 2.5;
     inLS  = 1.5;
     deepLS = 4.0;
     thickTB = 0.75;
@@ -2690,16 +2690,16 @@ void table(float x1, float x2, float y1,
     glRotatef(angle, 0, 1, 0);
 
     glPushMatrix(); // top
-    side1  = x2 + newLorF + thickTB; 
+    side1  = x2 + newLorF + thickTB;
     side2  = x2 + newLorF + wideM - thickTB;
     side3  = z1 + newIn + thickTB;
     side4  = z1 + newIn + deepM - thickTB;
     if (useTexture) tileSurface(side2, side1, up2, up2, side4,
-                        side3, 7.87f, 7.87f, 0, 0, useTile8, 0); 
+                        side3, 7.87f, 7.87f, 0, 0, useTile8, 0);
     shadeIt = FALSE;
     glColor3f(tedgr, tedgg, tedgb);
     boxA(side1, side2, up2, up1, side3, side4);
-    if (useTexture) shadeIt = TRUE;            
+    if (useTexture) shadeIt = TRUE;
     glPopMatrix();
 
     glPushMatrix(); // face1
@@ -2710,7 +2710,7 @@ void table(float x1, float x2, float y1,
     glColor3f(tedgr*0.9f, tedgg*0.9f, tedgb*0.9f);
     facex(side1, side2, up2, up1, side3, 0);
     glColor3f(tedgr, tedgg, tedgb);
-    boxA(side1, side2, up2, up1, side3, side4);            
+    boxA(side1, side2, up2, up1, side3, side4);
     glPopMatrix();
 
     glPushMatrix(); // face2
@@ -2719,33 +2719,33 @@ void table(float x1, float x2, float y1,
     glColor3f(tedgr*0.9f, tedgg*0.9f, tedgb*0.9f);
     facey(side1, side2, up2, up1, side3, 0);
     glColor3f(tedgr, tedgg, tedgb);
-    boxA(side1, side2, up2, up1, side3, side4);            
+    boxA(side1, side2, up2, up1, side3, side4);
     glPopMatrix();
 
     glPushMatrix(); // side1
-    side1  = x2 + newLorF; 
+    side1  = x2 + newLorF;
     side2  = x2 + newLorF + thickTB;
     side3  = z1 + newIn + thickTB;
     side4  = z1 + newIn + deepM - thickTB;
     glColor3f(tedgr*0.9f, tedgg*0.9f, tedgb*0.9f);
     sidex(0, side2, up2, up1, side3, side4);
     glColor3f(tedgr, tedgg, tedgb);
-    boxA(side1, side2, up2, up1, side3, side4);            
+    boxA(side1, side2, up2, up1, side3, side4);
     glPopMatrix();
 
     glPushMatrix(); // side2
-    side1  = x2 + newLorF + wideM; 
+    side1  = x2 + newLorF + wideM;
     side2  = x2 + newLorF + wideM - thickTB;
     glColor3f(tedgr*0.9f, tedgg*0.9f, tedgb*0.9f);
     sidey(0, side2, up2, up1, side3, side4);
     glColor3f(tedgr, tedgg, tedgb);
-    boxA(side1, side2, up2, up1, side3, side4);            
+    boxA(side1, side2, up2, up1, side3, side4);
     glPopMatrix();
 
     framer = tlegr;
     frameg = tlegg;
     frameb = tlegb;
-    
+
     // legs + across
     temp = newIn + deepM - inLS - wideL;
     temp2 = deepM;
@@ -2772,18 +2772,18 @@ void table(float x1, float x2, float y1,
 
     glPushMatrix();
     glColor3f(tlegr, tlegg, tlegb);
-    boxA(side1, side2, up2, up1, side3, side4);            
+    boxA(side1, side2, up2, up1, side3, side4);
     side1 = x2 + newLorF + temp3 - inLS;
     side2 = side1 - deepLS;
-    boxA(side1, side2, up2, up1, side3, side4);            
+    boxA(side1, side2, up2, up1, side3, side4);
     glPopMatrix();
 
-    framer = fram2r;    
+    framer = fram2r;
     frameg = fram2g;
     frameb = fram2b;
-    
+
     glPopMatrix();
-    
+
     shadeIt = FALSE;
 
 } // Table
@@ -2809,7 +2809,7 @@ void chair(float x1, float x2, float y1,
     chairHi = 14;
     cbackHi = 10;
     inset = -fromWall;
-    wideL = 1.0; 
+    wideL = 1.0;
     deepLS = 1.5;
 
     if (type == cFront)
@@ -2840,7 +2840,7 @@ void chair(float x1, float x2, float y1,
     glPushMatrix();
     glRotatef(angle, 0, 1, 0);
 
-    framer = clegr;    
+    framer = clegr;
     frameg = clegg;
     frameb = clegb;
 
@@ -2857,28 +2857,28 @@ void chair(float x1, float x2, float y1,
     glPopMatrix();
     highM = temp;
     deepM = temp3;
-    
+
     glPushMatrix();
     up1 = y2 + floorUp + chairHi - cbackHi;
     up2 = y2 + floorUp + chairHi;
-    side1  = x2 + newLorF + wideL; 
+    side1  = x2 + newLorF + wideL;
     side2  = x2 + newLorF + wideM - wideL;
     side3  = z1 + newIn + deepM - wideL;
     side4  = z1 + newIn + deepM;
     glColor3f(ctopr*0.9f, ctopg*0.9f, ctopb*0.9f);
-    boxA(side1, side2, up2, up1, side3, side4);            
+    boxA(side1, side2, up2, up1, side3, side4);
     glPopMatrix();
-    
+
     up2    = y2 + floorUp + highM;
     up1    = y2 + floorUp;
 
     glPushMatrix(); // seat
-    side1  = x2 + newLorF + thickTB; 
+    side1  = x2 + newLorF + thickTB;
     side2  = x2 + newLorF + wideM - thickTB;
     side3  = z1 + newIn + thickTB;
     side4  = z1 + newIn + deepM - thickTB;
     glColor3f(ctopr, ctopg, ctopb);
-    boxA(side1, side2, up2, up1, side3, side4);            
+    boxA(side1, side2, up2, up1, side3, side4);
     glPopMatrix();
 
     // legs + across
@@ -2903,19 +2903,19 @@ void chair(float x1, float x2, float y1,
     side4  = z1 + newIn + temp2 - wideL;
     up1 = y2 + highM - deepLS;
     up2 = y2 + highM;
-    
+
     glPushMatrix();
     glColor3f(clegr, clegg, clegb);
-    boxA(side1, side2, up2, up1, side3, side4);            
+    boxA(side1, side2, up2, up1, side3, side4);
     side1 = x2 + newLorF + temp3;
     side2 = side1 - deepLS;
-    boxA(side1, side2, up2, up1, side3, side4);            
+    boxA(side1, side2, up2, up1, side3, side4);
     glPopMatrix();
 
-    framer = fram2r;    
+    framer = fram2r;
     frameg = fram2g;
     frameb = fram2b;
-    
+
     glPopMatrix();
 
     shadeIt = FALSE;
@@ -2936,10 +2936,10 @@ void tileSurface(float h1, float h2, float na,
     float hStart, hEnd, hRem;
     float wStart, wEnd, wRem, w1a;
     na = na;
-    
+
     yHigh = h1 - h2;
     wWide = w1 - w2;
-   
+
     noHigh = (int)(yHigh / tileHigh);
     noWide = (int)(wWide / tileWide);
     noHighx = noHigh - 1;
@@ -2989,12 +2989,12 @@ void tileSurface(float h1, float h2, float na,
             noWide = 1;
             noWidex = 1;
             wStart = wWide / tileWide;
-        }   
+        }
         newFL = 1 - wEnd;
         newBR = wStart;
     }
     else if (alignW & alignBakR)
-    {        
+    {
         wStart  = bakRAlign;
         if (wWide > bakRAlign * tileWide)
         {
@@ -3015,9 +3015,9 @@ void tileSurface(float h1, float h2, float na,
             noWidex = 1;
             wEnd = 1 - wWide / tileWide;
             tw2a = 0;
-        }        
+        }
         newBR = wStart;
-        newFL = 1 - wEnd;           
+        newFL = 1 - wEnd;
     }
 
     hStart = 1.0;
@@ -3035,15 +3035,15 @@ void tileSurface(float h1, float h2, float na,
                 hStart = hStart + 0.5f;
                 hEnd = hEnd - 0.5f;
                 noHigh = noHigh - 1;
-                
+
             }
             noHighx = noHigh - 1;
         }
-        
+
     }
     else if (alignH & alignUp)
     {
-        hEnd  = 1 - upAlign;        
+        hEnd  = 1 - upAlign;
         if (yHigh > upAlign * tileHigh)
         {
             yHigh = yHigh - upAlign * tileHigh;
@@ -3061,7 +3061,8 @@ void tileSurface(float h1, float h2, float na,
         {
             noHigh = 1;
             noHighx = 1;
-            hEnd  = 1 - yHigh / tileHigh;        }            
+            hEnd  = 1 - yHigh / tileHigh;
+        }
     }
     else if (alignH & alignDown)
     {
@@ -3086,7 +3087,7 @@ void tileSurface(float h1, float h2, float na,
             hStart  = yHigh / tileHigh;
         }
     }
-    
+
     glTexEnvi(GL_TEXTURE_ENV,
                         GL_TEXTURE_ENV_MODE, GL_REPLACE);
     glTexParameteri(GL_TEXTURE_2D,
@@ -3096,7 +3097,7 @@ void tileSurface(float h1, float h2, float na,
     glTexParameteri(GL_TEXTURE_2D,
                            GL_TEXTURE_WRAP_S, GL_REPEAT);
     glTexParameteri(GL_TEXTURE_2D,
-                           GL_TEXTURE_WRAP_T, GL_REPEAT);   
+                           GL_TEXTURE_WRAP_T, GL_REPEAT);
     if (tileData == useTile5)
     {
        glTexImage2D(GL_TEXTURE_2D, 0, 3, abwide[5], abhigh[5], 0,
@@ -3117,7 +3118,7 @@ void tileSurface(float h1, float h2, float na,
        glTexImage2D(GL_TEXTURE_2D, 0, 3, abwide[8], abhigh[8], 0,
                      GL_BGR, GL_UNSIGNED_BYTE, myTile[8]);
     }
-     
+
     glEnable(GL_TEXTURE_2D);
 
     glPushMatrix();
@@ -3135,12 +3136,12 @@ void tileSurface(float h1, float h2, float na,
         {
             th2 = hEnd;
         }
-        th3 = th1 - th2;   
+        th3 = th1 - th2;
         ha = h1;
         hb = ha - tileHigh * th3;
         h1 = hb;
         w1 = w1a;
-        
+
         for (k=0; k<noWide; k++)
         {
           tw1 = 1.0;
@@ -3161,7 +3162,7 @@ void tileSurface(float h1, float h2, float na,
                 tw1 = 1 - tw2; tw2 = 0;
              }
           }
-          tw3 = tw1 - tw2;   
+          tw3 = tw1 - tw2;
           wa = w1;
           wb = wa - tileWide * tw3;
           w1 = wb;
@@ -3170,7 +3171,7 @@ void tileSurface(float h1, float h2, float na,
               glNormal3f( 0.0F, 1.0F, 0.0F);
               glTexCoord2f(tw1, th1); glVertex3f(ha, fix, wa);
               glTexCoord2f(tw2, th1); glVertex3f(ha, fix, wb);
-              glTexCoord2f(tw2, th2); glVertex3f(hb, fix, wb); 
+              glTexCoord2f(tw2, th2); glVertex3f(hb, fix, wb);
               glTexCoord2f(tw1, th2); glVertex3f(hb, fix, wa);
               lines = lines + 3;
           }
@@ -3179,7 +3180,7 @@ void tileSurface(float h1, float h2, float na,
              glNormal3f( 0.0F, 1.0F, 0.0F);
              glTexCoord2f(tw1, th1); glVertex3f(fix, ha, wb);
              glTexCoord2f(tw2, th1); glVertex3f(fix, ha, wa);
-             glTexCoord2f(tw2, th2); glVertex3f(fix, hb, wa); 
+             glTexCoord2f(tw2, th2); glVertex3f(fix, hb, wa);
              glTexCoord2f(tw1, th2); glVertex3f(fix, hb, wb);
              lines = lines + 3;
           }
@@ -3206,11 +3207,11 @@ void tileSurface(float h1, float h2, float na,
              glNormal3f( 0.0F, 1.0F, 0.0F); // 0 0 1
              glTexCoord2f(tw1, th1); glVertex3f(wa, ha, fix);
              glTexCoord2f(tw2, th1); glVertex3f(wb, ha, fix);
-             glTexCoord2f(tw2, th2); glVertex3f(wb, hb, fix); 
+             glTexCoord2f(tw2, th2); glVertex3f(wb, hb, fix);
              glTexCoord2f(tw1, th2); glVertex3f(wa, hb, fix);
              lines = lines + 3;
-          }                      
-        }   
+          }
+        }
     }
     glEnd();
     glPopMatrix();
@@ -3229,7 +3230,7 @@ void rightView(float x1, float x2, float y1,
     float fac, fad;
 
     if (useTexture) shadeIt = TRUE;
-    
+
     if (viewSide != cRight)
     {
        fromWall = 40;
@@ -3249,7 +3250,7 @@ void rightView(float x1, float x2, float y1,
     if (useTexture) shadeIt = TRUE;
     frameW(x1, x2, y1, y2, z1, z2, cRight, types);
     deepM = wallR;
-    shadeIt = FALSE; 
+    shadeIt = FALSE;
     holeA(x1, x2, y1, y2, z1, z2, cRight, 0, 0);
     deepM = inset;
     holeA(x1, x2, y1, y2, z1, z2, cRight, 0, 13);
@@ -3295,7 +3296,7 @@ void rightView(float x1, float x2, float y1,
     inset = - wideM;
     wideMa = 20;
     deepMa = -0.25;
-    deepMb = -0.5; 
+    deepMb = -0.5;
     deepMc = -0.75;
     wide2c = 3;
     wide2a = 0.25;
@@ -3320,7 +3321,7 @@ void rightView(float x1, float x2, float y1,
     inset = -11;
     wideMa = 20;
     deepMa = -0.25;
-    deepMb = -0.5; 
+    deepMb = -0.5;
     deepMc = -0.75;
     wide2c = 3;
     wide2a = 0.25;
@@ -3339,7 +3340,7 @@ void rightView(float x1, float x2, float y1,
     floorUp = 56;
     wideM = 0;
     deepM = 11;
-    highM = 29;       
+    highM = 29;
     glColor3f(cdorr*0.8f, cdorg*0.8f, cdorb*0.8f);
     facex(x1, x1-deepM, y2+floorUp, y2+floorUp+highM, z1-fromLorF+wideM, 0);
 
@@ -3347,7 +3348,7 @@ void rightView(float x1, float x2, float y1,
     floorUp = 4.5;
     wideM = 0;
     deepM = 21;
-    highM = 29;       
+    highM = 29;
     glColor3f(cdorr*0.8f, cdorg*0.8f, cdorb*0.8f);
     facex(x1, x1-deepM, y2+floorUp, y2+floorUp+highM, z1-fromLorF+wideM, 0);
 
@@ -3367,7 +3368,7 @@ void rightView(float x1, float x2, float y1,
     highM = 0.6f;
     floorUp = 41;
     fromLorF = 134.75;
-    wideM = 3.5;    
+    wideM = 3.5;
     doHandle = TRUE;
     glColor3f(handr, handg, handb);
     door(x1, x2, y1, y2, z1, z2, cRight, 0);
@@ -3388,7 +3389,7 @@ void rightView(float x1, float x2, float y1,
     deepM = 1.5;
     inset = 0; // wallR-deepM-2;
     door2(x1, x2, y1, y2, z1, z2, cRight, glassIn);
-        
+
     shadeIt = FALSE;
     fromLorF = 130; // from left
     wideM = 42;  // width
@@ -3400,13 +3401,13 @@ void rightView(float x1, float x2, float y1,
     frameW(x1, x2, y1, y2, z1, z2, cRight, noBottom);
 
     shadeIt = FALSE;
-    
+
     fromLorF = 0.75;
     wideM = 41;
     shelfHi = 15;
     deepM = 21;
     inset = - deepM;;
-    highM = 29;       
+    highM = 29;
     floorUp = 4.5;
     wide2 = 0.75;
     types = shelfIn + backIn;
@@ -3414,7 +3415,7 @@ void rightView(float x1, float x2, float y1,
 
     fromLorF = 41.75;
     wideM = 40;
-    highM = 29;       
+    highM = 29;
     shelfHi = 15;
     deepM = 21;
     inset = - deepM;;
@@ -3443,14 +3444,14 @@ void rightView(float x1, float x2, float y1,
 
     if (useTexture)
     {
-        h2 = y2 + winBup + tile7H + 5.5f * tile6H; // top border                  
+        h2 = y2 + winBup + tile7H + 5.5f * tile6H; // top border
         h3 = h2;
         h1 = h2 + tile7H;
         l1 = z1; r1 = z2;
         upAlign = 1.0;
- 
+
         tileSurface(h1, h2, 0, x1, l1,
-             r1, tile7H, tile7W, 0, alignUp, useTile7, cRight); 
+             r1, tile7H, tile7W, 0, alignUp, useTile7, cRight);
 
         frontLAlign = newFL; // LH inset note for later use
         bakRAlign = newBR; // RH inset
@@ -3458,59 +3459,59 @@ void rightView(float x1, float x2, float y1,
         h2 = h1; h1 = y1; // top of border
         upAlign = 1.0;
         tileSurface(h1, h2, 0, x1, l1,
-             r1, tile6H, tile6W, alignBakR, alignUp, useTile6, cRight); 
+             r1, tile6H, tile6W, alignBakR, alignUp, useTile6, cRight);
 
         h2 = y2 + winBup; // bottom border front
-        h1 = h2 + tile7H;    
+        h1 = h2 + tile7H;
         l1 = z1; r1 = l1 - 46; //  60w - 129 to d;
         tileSurface(h1, h2, 0, x1, l1,
-             r1, tile7H, tile7W, alignBakR, 0, useTile7, cRight); 
+             r1, tile7H, tile7W, alignBakR, 0, useTile7, cRight);
         fad = 1 - newFL;
 
 
         h1 = y2 + winBup; // below border
         h2 = y2 + 35;
-        l1 = z1; r1 = z1 - 106; 
+        l1 = z1; r1 = z1 - 106;
         downAlign = 1.0;
         tileSurface(h1, h2, 0, x1, l1,
-                 r1,  tile6H, tile6W, alignBakR, alignDown, useTile6, cRight); 
+                 r1,  tile6H, tile6W, alignBakR, alignDown, useTile6, cRight);
         fac = newFL;
-      
+
         l1 = z1; r1 = l1 - 41.75f;
         h2 = y2 + winBup + tile7H; // above bottom border front
         h1 = y2 + 56;
-        upAlign = 1.0; 
+        upAlign = 1.0;
         tileSurface(h1, h2, 0, x1, l1,
                  r1,  tile6H, tile6W, alignBakR, alignUp, useTile6, cRight);
 
         h2 = y2 + 85; h1 = h3; // below top border over cupboards
-        downAlign = 0.5;               
+        downAlign = 0.5;
         tileSurface(h1, h2, 0, x1, l1,
              r1, tile6H, tile6W, alignBakR, alignDown, useTile6, cRight);
 
         frontLAlign = fac;
         l1 = z1 - 46; r1 = l1 - 60; // window top
         h2 = y2 + winBup + 42; h1 = h3;
-        downAlign = 0.5;               
+        downAlign = 0.5;
         tileSurface(h1, h2, 0, x1, l1,
              r1, tile6H, tile6W, alignFrontL, alignDown, useTile6, cRight);
 
         frontLAlign = 1 - newBR; // end cupboard
         h2 = y2 + winBup + tile7H;  h1 = h3;
         l1 = z1 - 41.75f; r1 = z1 - 46;
-        downAlign = 0.5;               
+        downAlign = 0.5;
         tileSurface(h1, h2, 0, x1, l1,
              r1, tile6H, tile6W, alignFrontL, alignDown, useTile6, cRight);
 
         bakRAlign = 1 - fac; // end window
-        l1 = z1 - 106; r1 = z1 - 129; 
+        l1 = z1 - 106; r1 = z1 - 129;
         h2 = y2 + winBup + tile7H;  h1 = h3;
-        downAlign = 0.5;               
+        downAlign = 0.5;
         tileSurface(h1, h2, 0, x1, l1,
              r1, tile6H, tile6W, alignBakR, alignDown, useTile6, cRight);
 
         h1 = y2 + winBup; // below border
-        h2 = y2 + 35; 
+        h2 = y2 + 35;
         r1 = z1 - 121.75f;
         downAlign = 1.0;
         tileSurface(h1, h2, 0, x1, l1,
@@ -3520,10 +3521,10 @@ void rightView(float x1, float x2, float y1,
         upAlign = 1;
         r1 = z1 - 129;
         tileSurface(h1, h2, 0, x1, l1,
-             r1, tile7H, tile7W, alignBakR, alignUp, useTile7, cRight); 
+             r1, tile7H, tile7W, alignBakR, alignUp, useTile7, cRight);
 
         frontLAlign = newFL;
-        l1 = z1 - 20.75f - 80 - 20 - 0.75f; // by door RHS bottom       
+        l1 = z1 - 20.75f - 80 - 20 - 0.75f; // by door RHS bottom
         r1 = z1 - 129;
         h2 = y2; h1 =  y2 + winBup;
         downAlign = 1.0;
@@ -3533,29 +3534,29 @@ void rightView(float x1, float x2, float y1,
         bakRAlign = 1 - newFL;
         l1 = z1 - 129; r1 = l1 - 44;
         h2 = y2 + 82; h1 = h3;
-        downAlign = 0.5;               
+        downAlign = 0.5;
         tileSurface(h1, h2, 0, x1, l1,
              r1, tile6H, tile6W, alignBakR, alignDown, useTile6, cRight);
 
         bakRAlign = 1 - newFL;
         h2 = y2 + winBup + tile7H; h1 = h3;
-        l1 = r1; r1 = z2; 
-        downAlign = 0.5;               
+        l1 = r1; r1 = z2;
+        downAlign = 0.5;
         tileSurface(h1, h2, 0, x1, l1,
              r1, tile6H, tile6W, alignBakR, alignDown, useTile6, cRight);
 
         h2 = y2 + winBup; h1 = h2 + tile7H; // border
         upAlign = 1;
         tileSurface(h1, h2, 0, x1, l1,
-             r1, tile7H, tile7W, alignBakR, alignUp, useTile7, cRight); 
+             r1, tile7H, tile7W, alignBakR, alignUp, useTile7, cRight);
 
         h2 = y2; h1 = y2 + winBup; // LH door
-        downAlign = 1.0;               
+        downAlign = 1.0;
         tileSurface(h1, h2, 0, x1, l1,
              r1, tile6H, tile6W, alignBakR, alignDown, useTile6, cRight);
 
         // Window
-        
+
         h1 =  x1 + 6; h2 = x1; // down / across
         r1 = z1 - 46; l1 = r1 - 60; // window bottom - back
 
@@ -3569,9 +3570,9 @@ void rightView(float x1, float x2, float y1,
         upAlign = 1;
         frontLAlign = 1;
         tileSurface(h1, h2, 0, z1-46, r1,
-             l1, tile7H, tile7W, alignFrontL, alignUp, useTile7, cFront); 
+             l1, tile7H, tile7W, alignFrontL, alignUp, useTile7, cFront);
         tileSurface(h1, h2, 0, z1-106, r1,
-             l1, tile7H, tile7W, alignFrontL, alignUp, useTile7, cBack);    
+             l1, tile7H, tile7W, alignFrontL, alignUp, useTile7, cBack);
 
         h2 = y2 + winBup + tile7H; h1 = y2 + winBup + 42 ;
         h3 = (h3 - h1) / tile6H - 0.5f;
@@ -3584,11 +3585,11 @@ void rightView(float x1, float x2, float y1,
         {
             h3 = 1.0;
         }
-        upAlign = h3;               
+        upAlign = h3;
         tileSurface(h1, h2, 0, z1-46, r1,
-             l1, tile6H, tile6W, alignFrontL, alignUp, useTile6, cFront); 
+             l1, tile6H, tile6W, alignFrontL, alignUp, useTile6, cFront);
         tileSurface(h1, h2, 0, z1-106, r1,
-             l1, tile6H, tile6W, alignFrontL, alignUp, useTile6, cBack);    
+             l1, tile6H, tile6W, alignFrontL, alignUp, useTile6, cBack);
 
 
     }
@@ -3624,7 +3625,7 @@ void leftView(float x1, float x2, float y1,
        fromWall = 31;
        fromLorF = roomDepth - 52;
        chair(x1, x2, y1, y2, z1, z2, cLeft, 0);
-    }    
+    }
 
     floorUp = 33.5;
     highM = 1.5;
@@ -3651,16 +3652,16 @@ void leftView(float x1, float x2, float y1,
     wideM = 20.75;
     wideMa = 20;
     deepMa = -0.25;
-    deepMb = -0.5; 
+    deepMb = -0.5;
     deepMc = -0.75;
     inset = - wideM;
     highM = 29;
-    handleUp = 23;       
+    handleUp = 23;
     floorUp = 4.5;
     wide2c = 3;
     wide2a = 0.25;
     wide2b = 0.25;
-    wide2d = 2;     
+    wide2d = 2;
     glColor3f(cdorr, cdorg, cdorb);
     for (i=0; i<4; i++)
     {
@@ -3686,7 +3687,7 @@ void leftView(float x1, float x2, float y1,
     inset = -11;
     wideMa = 20;
     deepMa = -0.25;
-    deepMb = -0.5; 
+    deepMb = -0.5;
     deepMc = -0.75;
     wide2c = 3;
     wide2a = 0.25;
@@ -3755,13 +3756,13 @@ void leftView(float x1, float x2, float y1,
     facex(x2+11, x2+deepM, y2+floorUp, y2+floorUp+highM, z1-fromLorF+wideM, 0);
 
     shadeIt = FALSE;
-    
+
     fromLorF = 0.75;
     wideM = 41;
     shelfHi = 15;
     deepM = 21;
     inset = - deepM;;
-    highM = 29;       
+    highM = 29;
     floorUp = 4.5;
     wide2 = 0.75;
     types = shelfIn + backIn;
@@ -3771,7 +3772,7 @@ void leftView(float x1, float x2, float y1,
     wideM = 20;
     shelfHi = 15;
     deepM = 21;
-    highM = 29;       
+    highM = 29;
     inset = - deepM;;
     floorUp = 4.5;
     wide2 = 0.75;
@@ -3806,14 +3807,14 @@ void leftView(float x1, float x2, float y1,
 
     if (useTexture)
     {
-        h2 = y2 + winBup + tile7H + 5.5f * tile6H; // top border                  
+        h2 = y2 + winBup + tile7H + 5.5f * tile6H; // top border
         h3 = h2;
         h1 = h2 + tile7H;
         l1 = z1; r1 = z2;
         upAlign = 1.0;
 
         tileSurface(h1, h2, 0, x2, l1,
-             r1, tile7H, tile7W, 0, alignUp, useTile7, cLeft); 
+             r1, tile7H, tile7W, 0, alignUp, useTile7, cLeft);
 
         frontLAlign = newFL; // LH inset note for later use
         bakRAlign = newBR; // RH inset
@@ -3821,46 +3822,46 @@ void leftView(float x1, float x2, float y1,
         h2 = h1; h1 = y1; // top of border
         upAlign = 1.0;
         tileSurface(h1, h2, 0, x2, l1,
-             r1, tile6H, tile6W, alignBakR, alignUp, useTile6, cLeft); 
+             r1, tile6H, tile6W, alignBakR, alignUp, useTile6, cLeft);
 
         h2 = y2 + 85; h1 = h3; // top cupboards
         l1 = z1; r1 = l1 - 121.75f;
-        downAlign = 1.0;               
+        downAlign = 1.0;
         tileSurface(h1, h2, 0, x2, l1,
              r1, tile6H, tile6W, alignBakR, alignDown, useTile6, cLeft);
 
         h2 = y2 + winBup; // bottom border side
-        h1 = h2 + tile7H;    
+        h1 = h2 + tile7H;
         l1 = r1; r1 = z2;
         upAlign = 1.0;
         tileSurface(h1, h2, 0, x2, l1,
-             r1, tile7H, tile7W, alignFrontL, alignUp, useTile7, cLeft); 
-    
+             r1, tile7H, tile7W, alignFrontL, alignUp, useTile7, cLeft);
+
         h2 = h1; h1 = h1 + 5.5f * tile6H; // 5.5 tiles up from border
         upAlign = 1.0;
         tileSurface(h1, h2, 0, x2, l1,
-             r1, tile6H, tile6W, alignFrontL, alignUp, useTile6, cLeft); 
-             
+             r1, tile6H, tile6W, alignFrontL, alignUp, useTile6, cLeft);
+
         h1 = y2 + winBup; h2 = y2; // below border
         downAlign = 1.0;
         tileSurface(h1, h2, 0, x2, l1,
-             r1, tile6H, tile6W, alignFrontL, alignDown, useTile6, cLeft); 
+             r1, tile6H, tile6W, alignFrontL, alignDown, useTile6, cLeft);
 
         h2 = y2 + winBup; // bottom border cupboards
-        h1 = h2 + tile7H;    
+        h1 = h2 + tile7H;
         l1 = z1; r1 = l1 - 101.75f;
         tileSurface(h1, h2, 0, x2, l1,
-             r1, tile7H, tile7W, alignBakR, 0, useTile7, cLeft); 
+             r1, tile7H, tile7W, alignBakR, 0, useTile7, cLeft);
 
         h1 = y2 + winBup; // below border
         h2 = y2 + 35;
         downAlign = 1.0;
         tileSurface(h1, h2, 0, x2, l1,
-                 r1,  tile6H, tile6W, alignBakR, alignDown, useTile6, cLeft); 
+                 r1,  tile6H, tile6W, alignBakR, alignDown, useTile6, cLeft);
 
         h2 = y2 + winBup + tile7H; // above border
         h1 = y2 + 56;
-        upAlign = 1.0; 
+        upAlign = 1.0;
         tileSurface(h1, h2, 0, x2, l1,
                  r1,  tile6H, tile6W, alignBakR, alignUp, useTile6, cLeft);
     }
@@ -3869,7 +3870,7 @@ void leftView(float x1, float x2, float y1,
        fromWall = 31;
        fromLorF = roomDepth - 52;
        chair(x1, x2, y1, y2, z1, z2, cLeft, 0);
-    }    
+    }
 
 } // leftView
 
@@ -3879,7 +3880,7 @@ void frontView(float x1, float x2, float y1,
     int types;
     float h1, h2, h3, r1, l1;
     float thisBR, thisFL;
-    
+
     if (viewSide != cFront)
     {
        fromWall = roomDepth - 64;
@@ -3906,7 +3907,7 @@ void frontView(float x1, float x2, float y1,
     highM = 0.6f;
     floorUp = 41;
     fromLorF = 54.75;
-    wideM = 3.5;    
+    wideM = 3.5;
     doHandle = TRUE;
     glColor3f(handr, handg, handb);
     door(x1, x2, y1, y2, z1, z2, cFront, 0);
@@ -3926,7 +3927,7 @@ void frontView(float x1, float x2, float y1,
     wideM = 38;
     deepM = 1.5;
     inset = 0;
-    highM = 79;       
+    highM = 79;
     glColor3f(doorr, doorg, doorb);
     door(x1, x2, y1, y2, z1, z2, cFront, 0);
     shadeIt = FALSE;
@@ -3958,7 +3959,7 @@ void frontView(float x1, float x2, float y1,
     wideM = 20.75;
     deepM = 21;
     inset = - deepM;
-    bakRAlign = 0.7f;       
+    bakRAlign = 0.7f;
     workTop(x1, x2, y1, y2, z1, z2, cFront, noEdge, alignBakR, 0);
 
     floorUp = 33.5;
@@ -3976,7 +3977,7 @@ void frontView(float x1, float x2, float y1,
     wideM = 20;
     fromLorF = roomWidth - 21.75f - wideM;
     deepM = thickTB;
-    inset = -21.75;       
+    inset = -21.75;
     workTop(x1, x2, y1, y2, z1, z2, cFront, edge, 0, 0);
 
     floorUp = 33.5;
@@ -3996,7 +3997,7 @@ void frontView(float x1, float x2, float y1,
     inset = - wideM;
     wideMa = 20;
     deepMa = -0.25;
-    deepMb = -0.5; 
+    deepMb = -0.5;
     deepMc = -0.75;
     wide2c = 3;
     wide2a = 0.25;
@@ -4018,7 +4019,7 @@ void frontView(float x1, float x2, float y1,
     inset = -11;
     wideMa = 20;
     deepMa = -0.25;
-    deepMb = -0.5; 
+    deepMb = -0.5;
     deepMc = -0.75;
     wide2c = 3;
     wide2a = 0.25;
@@ -4047,14 +4048,14 @@ void frontView(float x1, float x2, float y1,
     floorUp = 4.5;
     fromLorF = 21;
 
-    highM = 29;       
+    highM = 29;
     deepM = 21;
     glColor3f(cdorr*0.8f, cdorg*0.8f, cdorb*0.8f);
     sidey(0, x2+fromLorF+wideM, y2+floorUp, y2+floorUp+highM, z1, z1-deepM);
 
     wideM = 20.75;
     floorUp = 4.5;
-    highM = 29;       
+    highM = 29;
     deepM = 21;
     fromLorF = roomWidth - 21 - 2 * wideM;
     glColor3f(cdorr*0.8f, cdorg*0.8f, cdorb*0.8f);
@@ -4063,7 +4064,7 @@ void frontView(float x1, float x2, float y1,
     wideM = 20.75;
     fromLorF = 21;
     floorUp = 56;
-    highM = 29;       
+    highM = 29;
     deepM = 11;
     glColor3f(cdorr*0.8f, cdorg*0.8f, cdorb*0.8f);
     sidey(0, x2+fromLorF+wideM, y2+floorUp, y2+floorUp+highM, z1, z1-deepM);
@@ -4071,7 +4072,7 @@ void frontView(float x1, float x2, float y1,
     wideM = 20.75;
     floorUp = 56;
     deepM = 11;
-    highM = 29;       
+    highM = 29;
     fromLorF = roomWidth - 11 - 10.75f - 2 * wideM; // RHS
     glColor3f(cdorr*0.8f, cdorg*0.8f, cdorb*0.8f);
     sidex(0, x2+fromLorF+wideM, y2+floorUp, y2+floorUp+highM, z1, z1-deepM);
@@ -4080,7 +4081,7 @@ void frontView(float x1, float x2, float y1,
 
     wideM = 20.75;
     fromLorF = 21;
-    highM = 29;       
+    highM = 29;
     shelfHi = 15;
     deepM = 21;
     inset = - deepM;;
@@ -4103,7 +4104,7 @@ void frontView(float x1, float x2, float y1,
     frameW(x1, x2, y1, y2, z1, z2, cFront, types);
     fromLorF = roomWidth - 11 - wideM; // RHS
     frameW(x1, x2, y1, y2, z1, z2, cFront, types);
-    
+
     if (useTexture) shadeIt = TRUE;
 
     if (useTexture)
@@ -4124,26 +4125,26 @@ void frontView(float x1, float x2, float y1,
         bakRAlign = newBR; // RH inset
 
         h2 = y2 + 85; h1 = h3; // top cupboards LHS - R inside room
-        l1 = x2; r1 = l1 + 41.75f; 
-        downAlign = 1.0;               
+        l1 = x2; r1 = l1 + 41.75f;
+        downAlign = 1.0;
         tileSurface(h1, h2, 0, z1, r1,
              l1, tile6H, tile6W, alignFrontL, alignDown, useTile6, cFront);
 
         r1 = x1; l1 = r1 - 41.75f; // top cubboard RHS
-        downAlign = 1.0;               
+        downAlign = 1.0;
         tileSurface(h1, h2, 0, z1, r1,
              l1, tile6H, tile6W, alignBakR, alignDown, useTile6, cFront);
 
 
         h2 = y2 + winBup; // bottom border side
-        h1 = h2 + tile7H;    
-        l1 = x2; r1 = l1 + 49; 
+        h1 = h2 + tile7H;
+        l1 = x2; r1 = l1 + 49;
         upAlign = 1.0;
         tileSurface(h1, h2, 0, z1, r1,
              l1, tile7H, tile7W, alignFrontL, alignUp, useTile7, cFront);
 
         thisBR = newBR;
-        
+
         l1 = r1+44; r1 = x1; // bottom border
         tileSurface(h1, h2, 0, z1, r1,
              l1, tile7H, tile7W, alignBakR, alignUp, useTile7, cFront);
@@ -4152,8 +4153,8 @@ void frontView(float x1, float x2, float y1,
 
         h2 = y2 + winBup + tile7H; // above bottom border
         h1 = y2 + 56;
-        upAlign = 1.0; 
-        l1 = x2; r1 = l1 + 41.75f; 
+        upAlign = 1.0;
+        l1 = x2; r1 = l1 + 41.75f;
         tileSurface(h1, h2, 0, z1, r1,
              l1, tile6H, tile6W, alignFrontL, alignUp, useTile6, cFront);
 
@@ -4164,7 +4165,7 @@ void frontView(float x1, float x2, float y1,
         h1 = y2 + winBup; // below bottom border
         h2 = y2 + 35;
         downAlign = 1.0;
-        l1 = x2; r1 = l1 + 41.75f; 
+        l1 = x2; r1 = l1 + 41.75f;
         tileSurface(h1, h2, 0, z1, r1,
              l1, tile6H, tile6W, alignFrontL, alignDown, useTile6, cFront);
 
@@ -4182,11 +4183,11 @@ void frontView(float x1, float x2, float y1,
 
 
         bakRAlign = thisBR;
-        
+
         h1 = y2 + 82;
         h2 = y2 + winBup + tile7H; // side of door
-        upAlign = 1.0; 
-        l1 = x2 + 41.75f; r1 = x2 + 49; 
+        upAlign = 1.0;
+        l1 = x2 + 41.75f; r1 = x2 + 49;
         tileSurface(h1, h2, 0, z1, r1,
              l1, tile6H, tile6W, alignBakR, alignUp, useTile6, cFront);
 
@@ -4194,12 +4195,12 @@ void frontView(float x1, float x2, float y1,
         h1 = y2 + winBup; h2 = y2;
         tileSurface(h1, h2, 0, z1, r1,
              l1, tile6H, tile6W, alignBakR, alignDown, useTile6, cFront);
-        
-        frontLAlign = thisFL;        
+
+        frontLAlign = thisFL;
         h1 = y2 + 82;
         h2 = y2 + winBup + tile7H; // side of door
-        upAlign = 1.0; 
-        r1 = x1 - 41.75f; l1 = x2 + 49 + 44; 
+        upAlign = 1.0;
+        r1 = x1 - 41.75f; l1 = x2 + 49 + 44;
         tileSurface(h1, h2, 0, z1, r1,
              l1, tile6H, tile6W, alignFrontL, alignUp, useTile6, cFront);
 
@@ -4220,7 +4221,7 @@ void frontView(float x1, float x2, float y1,
        fromLorF = 67;
        chair(x1, x2, y1, y2, z1, z2, cFront, 0);
     }
-    
+
 } // frontView
 
 void rearView(float x1, float x2, float y1,
@@ -4230,7 +4231,7 @@ void rearView(float x1, float x2, float y1,
     float h1, h2, h3, r1, l1;
     float winWide, winFromL, winHigh;
     float fad;
- 
+
     if (viewSide != cBack)
     {
        fromWall = 18;
@@ -4252,7 +4253,7 @@ void rearView(float x1, float x2, float y1,
     highM = winHigh;
     deepM = 3;
     inset = 6;
-    wide2 = 2; 
+    wide2 = 2;
     upBarIn = 18;
     types = glassIn + upBar;
     if (useTexture) shadeIt = TRUE;
@@ -4273,53 +4274,53 @@ void rearView(float x1, float x2, float y1,
                  l1,  tile6H, tile6W, 0, alignDown, useTile6, cBack);
         frontLAlign = newFL; // LH inset note for later use
         bakRAlign = newBR; // RH inset
-        
+
         h2 = h1; h1 = h2 + tile7H; // RHS window border
         l1 = x2 + winFromL + winWide; r1 = x1;
         upAlign = 1.0;
         tileSurface(h1, h2, 0, z2, r1,
                  l1, tile7H, tile7W, alignBakR, alignUp, useTile7, cBack);
-        
+
         l1 = x2; r1 = x2 + winFromL; // LHS window border
         upAlign = 1.0;
         tileSurface(h1, h2, 0, z2, r1,
                  l1,  tile7H, tile7W, alignFrontL, alignUp, useTile7, cBack);
-        fad = 1 - newBR; 
-    
+        fad = 1 - newBR;
+
         h2 = h1; h1 = h1 + 5.5f * tile6H; // 5.5 tiles up from border
         h3 = h1;
         l1 = x2 + winFromL + winWide; r1 = x1;
         upAlign = 1.0;
         tileSurface(h1, h2, 0, z2, r1,
                  l1, tile6H,  tile6W, alignBakR, alignUp, useTile6, cBack);
-        
+
         l1 = x2; r1 = x2 + winFromL; // 5.5 tiles LHS up
         upAlign = 1.0;
         tileSurface(h1, h2, 0, z2, r1,
                  l1, tile6H,  tile6W, alignFrontL, alignUp, useTile6, cBack);
-    
+
         frontLAlign = 1 - newBR;
-    
+
         h2 = y2 + winHigh + winBup; // over window start half tile down
         downAlign = 0.5;
-        l1 = x2 + winFromL; r1 = l1 + winWide; 
+        l1 = x2 + winFromL; r1 = l1 + winWide;
         tileSurface(h1, h2, 0, z2, r1,
                  l1, tile6H, tile6W, alignFrontL, alignDown, useTile6, cBack);
-        
-    
+
+
         h2 = h1; h1 = h2 + tile7H; // top border
         r1 = x1; l1 = x2;
         upAlign = 1.0;
         tileSurface(h1, h2, 0, z2, r1,
                  l1, tile7H, tile7W, alignBakR, alignUp, useTile7, cBack);
-    
+
         h2 = h1; h1 = y1; // top of border
         upAlign = 1.0;
         tileSurface(h1, h2, 0, z2, r1,
                  l1, tile6H, tile6W, alignBakR, alignUp, useTile6, cBack);
 
         // WINDOW
-        
+
 
         h2 = x2 + winFromL; h1 = x2 + winFromL + winWide;
         r1 = z2; l1 = z2 - 6;
@@ -4354,7 +4355,7 @@ void rearView(float x1, float x2, float y1,
         tileSurface(h1, h2, 0, x2 + winFromL + winWide, l1,
                  r1,  tile6H, tile6W, alignBakR, alignUp, useTile6, cRight);
     }
-    
+
     if (viewSide == cBack)
     {
        fromWall = 18;
@@ -4364,7 +4365,7 @@ void rearView(float x1, float x2, float y1,
        fromLorF = 67;
        chair(x1, x2, y1, y2, z1, z2, cBack, 0);
     }
-    
+
 } // rearView
 
 
@@ -4372,7 +4373,7 @@ void lastView(float x1, float x2, float y1,
            float y2, float z1, float z2)
 {
         int i;
-        
+
         fromLorF = 0.75;
         wideM = 41;
         floorUp = 4.5;
