@@ -1,16 +1,32 @@
+LBITS := $(shell getconf LONG_BIT)
+
 SOURCES = \
 	ogl1.c
 
-OBJS = \
-	cpuidc$(ARCH).o \
-	cpuida$(ARCH).o
-
+CLEANFILES += *.o
 CLEANFILES += vga.txt
 CLEANFILES += videogl.txt
-CLEANFILES += videogl$(ARCH)
+CLEANFILES += videogl$(LBITS)
 
-all:
-	$(CC) $(CPPFLAGS) $(SOURCES) $(OBJS) -lrt -lc -lm -lglut -lGL -lGLU -o videogl$(ARCH)
+ifeq ($(LBITS),64)
+OBJS := \
+	cpuida64.o \
+	cpuidc64.o
+else
+OBJS := \
+	cpuida.o \
+	cpuidc.o
+endif
+
+%.o: %.asm
+	nasm -f elf32 -g -F stabs cpuida.asm
+	nasm -f elf64 -g -F stabs cpuida64.asm
+
+%.o: cpuid%.c
+	$(CC) $(CFLAGS) $< -c
+
+all: $(OBJS)
+	$(CC) $(CPPFLAGS) $(SOURCES) $(OBJS) -lrt -lc -lm -lglut -lGL -lGLU -o videogl$(LBITS)
 
 clean:
 	rm -rf $(CLEANFILES)
